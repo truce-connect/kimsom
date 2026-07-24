@@ -1,6 +1,8 @@
 // Admin Panel JavaScript
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000/api'
+    : '/api';
 let authToken = localStorage.getItem('adminToken');
 let currentAdmin = null;
 
@@ -42,8 +44,13 @@ if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const username = document.getElementById('username').value;
+        const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
+        
+        if (!username || !password) {
+            alert('Please enter both email and password');
+            return;
+        }
         
         try {
             const res = await fetch(`${API_BASE}/auth/login`, {
@@ -54,7 +61,7 @@ if (loginForm) {
             
             const data = await res.json();
             
-            if (data.success && data.user.role === 'admin') {
+            if (res.ok && data.success && data.user.role === 'admin') {
                 authToken = data.token;
                 localStorage.setItem('adminToken', authToken);
                 currentAdmin = data.user;
@@ -63,11 +70,23 @@ if (loginForm) {
                 document.getElementById('adminDashboard').style.display = 'flex';
                 loadDashboardData();
             } else {
-                alert('Invalid username or password');
+                const message = data.message || 'Invalid email or password';
+                alert(message);
             }
         } catch (err) {
-            alert('Login failed. Please try again.');
+            alert('Login failed. Please check your internet connection and try again.\n\nError: ' + err.message);
         }
+    });
+}
+
+// Password visibility toggle
+const passwordToggle = document.getElementById('passwordToggle');
+const passwordInput = document.getElementById('password');
+if (passwordToggle && passwordInput) {
+    passwordToggle.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        passwordToggle.querySelector('i').className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
     });
 }
 
@@ -95,9 +114,34 @@ navItems.forEach(item => {
         item.classList.add('active');
         
         const section = item.getAttribute('data-section');
+        if (section === 'add-product') {
+            resetProductForm();
+        }
         showSection(section);
+        
+        if (window.innerWidth <= 768) {
+            document.getElementById('adminSidebar').classList.remove('active');
+        }
     });
 });
+
+// Mobile menu toggle
+const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+const adminSidebar = document.getElementById('adminSidebar');
+if (mobileMenuToggle && adminSidebar) {
+    mobileMenuToggle.addEventListener('click', () => {
+        adminSidebar.classList.toggle('active');
+    });
+    
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && 
+            !adminSidebar.contains(e.target) && 
+            !mobileMenuToggle.contains(e.target) &&
+            adminSidebar.classList.contains('active')) {
+            adminSidebar.classList.remove('active');
+        }
+    });
+}
 
 function showSection(sectionName) {
     document.querySelectorAll('.admin-section').forEach(section => {
@@ -139,6 +183,11 @@ async function loadDashboardData() {
             })
         ]);
         
+        if (!statsRes.ok || !ordersRes.ok) {
+            console.error('Failed to load dashboard data');
+            return;
+        }
+        
         const statsData = await statsRes.json();
         const ordersData = await ordersRes.json();
         
@@ -155,11 +204,28 @@ async function loadDashboardData() {
 
 // Product Management
 const productForm = document.getElementById('productForm');
+const submitProductBtn = productForm ? productForm.querySelector('button[type="submit"]') : null;
+
+function resetProductForm() {
+    if (productForm) productForm.reset();
+    const editId = document.getElementById('editProductId');
+    if (editId) editId.value = '';
+    const pageTitle = document.getElementById('pageTitle');
+    if (pageTitle) pageTitle.textContent = 'Add Product';
+    if (submitProductBtn) submitProductBtn.textContent = 'Add Product';
+}
+
 if (productForm) {
     productForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const editId = document.getElementById('editProductId').value;
+        const isEdit = !!editId;
+        
+        if (submitProductBtn) {
+            submitProductBtn.textContent = isEdit ? 'Updating...' : 'Adding...';
+            submitProductBtn.disabled = true;
+        }
         
         const product = {
             name: document.getElementById('productName').value,
@@ -175,7 +241,6 @@ if (productForm) {
         };
         
         try {
-            const isEdit = !!editId;
             const url = isEdit ? `${API_BASE}/products/${editId}` : `${API_BASE}/products`;
             const method = isEdit ? 'PUT' : 'POST';
             
@@ -188,12 +253,18 @@ if (productForm) {
                 body: JSON.stringify(product)
             });
             
+            if (!res.ok) {
+                alert('Failed to save product. Please try again.');
+                return;
+            }
+            
             const data = await res.json();
             
             if (data.success) {
                 alert(isEdit ? 'Product updated successfully!' : 'Product added successfully!');
                 productForm.reset();
                 document.getElementById('editProductId').value = '';
+                if (submitProductBtn) submitProductBtn.textContent = 'Add Product';
                 loadDashboardData();
                 showSection('products');
             } else {
@@ -201,6 +272,8 @@ if (productForm) {
             }
         } catch (err) {
             alert('Error saving product. Please try again.');
+        } finally {
+            if (submitProductBtn) submitProductBtn.disabled = false;
         }
     });
 }
@@ -213,6 +286,11 @@ async function loadProducts() {
         const res = await fetch(`${API_BASE}/products/admin/all`, {
             headers: { Authorization: `Bearer ${authToken}` }
         });
+        
+        if (!res.ok) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Failed to load products</td></tr>';
+            return;
+        }
         
         const data = await res.json();
         
@@ -267,6 +345,11 @@ async function deleteProduct(id) {
             headers: { Authorization: `Bearer ${authToken}` }
         });
         
+        if (!res.ok) {
+            alert('Failed to delete product');
+            return;
+        }
+        
         const data = await res.json();
         
         if (data.success) {
@@ -287,6 +370,11 @@ async function editProduct(id) {
             headers: { Authorization: `Bearer ${authToken}` }
         });
         
+        if (!res.ok) {
+            alert('Failed to load product details');
+            return;
+        }
+        
         const data = await res.json();
         
         if (!data.success) {
@@ -306,6 +394,8 @@ async function editProduct(id) {
         document.getElementById('productDescription').value = product.description || '';
         document.getElementById('productImage').value = product.image || '';
         
+        document.getElementById('pageTitle').textContent = 'Edit Product';
+        if (submitProductBtn) submitProductBtn.textContent = 'Update Product';
         showSection('add-product');
     } catch (err) {
         alert('Error loading product details');
@@ -320,6 +410,11 @@ async function loadOrders() {
         const res = await fetch(`${API_BASE}/orders`, {
             headers: { Authorization: `Bearer ${authToken}` }
         });
+        
+        if (!res.ok) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Failed to load orders</td></tr>';
+            return;
+        }
         
         const data = await res.json();
         
@@ -372,6 +467,11 @@ async function viewOrder(id) {
             headers: { Authorization: `Bearer ${authToken}` }
         });
         
+        if (!res.ok) {
+            alert('Failed to load order details');
+            return;
+        }
+        
         const data = await res.json();
         
         if (!data.success) {
@@ -421,6 +521,11 @@ async function updateOrderStatus(id) {
             body: JSON.stringify({ status: newStatus })
         });
         
+        if (!res.ok) {
+            alert('Failed to update status');
+            return;
+        }
+        
         const data = await res.json();
         
         if (data.success) {
@@ -434,18 +539,19 @@ async function updateOrderStatus(id) {
     }
 }
 
-// Initialize with seed data check
+// Silent seed data check for debugging
 async function checkSeedData() {
     try {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
         
         if (data.success && data.count === 0) {
-            alert('No products found. Please run the seed script: npm run seed');
+            console.warn('No products found in database. Run: npm run seed');
         }
     } catch (err) {
         console.error('Error checking products:', err);
     }
 }
 
+// Only check seed data when backend is reachable
 checkSeedData();

@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loran Demo Day Pitch Deck — Vibrant Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C8922A;
+  --rust: #E84C3D;
+  --teal: #2E8B9E;
+  --purple: #6B5B95;
+  --orange: #FF6B35;
+  --green: #04A777;
+  --pink: #FF6B9D;
+  --cyan: #00D9FF;
+  --dark: #0F1419;
+  --cream: #FAF6EF;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: #000;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  overflow: hidden;
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide.active { display: flex; }
+
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+.slide-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-number {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 2px;
+  z-index: 2;
+}
+
+/* SLIDE 1: ULTRA CATCHY HOOK */
+.slide-1 {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF1493 25%, #00D9FF 50%, #FFD700 75%, #00FF88 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.slide-1 .slide-content {
+  animation: bounce 0.8s ease-out;
+}
+
+@keyframes bounce {
+  0% { transform: scale(0.8) translateY(30px); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.hook-super {
+  font-size: 72px;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  color: white;
+  letter-spacing: -2px;
+}
+
+.hook-emoji {
+  font-size: 120px;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+.hook-tagline {
+  font-size: 28px;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  margin-bottom: 16px;
+}
+
+.hook-subtext {
+  font-size: 16px;
+  color: rgba(255,255,255,0.95);
+  font-weight: 500;
+  max-width: 700px;
+  line-height: 1.6;
+}
+
+/* SLIDE 2: BURDEN */
+.slide-2 {
+  background: linear-gradient(135deg, #FF4444 0%, #FF6B35 50%, #FF1493 100%);
+  position: relative;
+}
+
+.slide-2::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(0,0,0,.05) 35px, rgba(0,0,0,.05) 70px);
+  pointer-events: none;
+}
+
+.slide-2 h2 {
+  font-size: 56px;
+  font-weight: 900;
+  margin-bottom: 40px;
+  color: white;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.pain-box {
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border-left: 6px solid #FFD700;
+  border-top: 2px solid white;
+  text-align: left;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.pain-box p {
+  font-size: 18px;
+  color: white;
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+.pain-emoji {
+  font-size: 32px;
+  margin-right: 12px;
+}
+
+/* SLIDE 3: SOLUTION */
+.slide-3 {
+  background: linear-gradient(135deg, #00D9FF 0%, #00FF88 50%, #00D9FF 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+.slide-3 h2 {
+  font-size: 56px;
+  font-weight: 900;
+  margin-bottom: 40px;
+  color: white;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  text-align: left;
+}
+
+.feature {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border: 2px solid white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  transform: transition 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.25);
+}
+
+.feature-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.feature-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.feature-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.95);
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* SLIDE 4: TRACTION */
+.slide-4 {
+  background: linear-gradient(135deg, #6B5B95 0%, #8E44AD 50%, #3498DB 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+.slide-4 h2 {
+  font-size: 56px;
+  font-weight: 900;
+  margin-bottom: 40px;
+  color: white;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.traction-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.traction-box {
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.3);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.traction-box:hover {
+  transform: translateY(-10px) scale(1.05);
+  border-color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.15);
+}
+
+.traction-number {
+  font-size: 48px;
+  font-weight: 900;
+  color: #FFD700;
+  line-height: 1;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.traction-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* SLIDE 5: BUSINESS MODEL */
+.slide-5 {
+  background: linear-gradient(135deg, #FF6B35 0%, #FFD700 50%, #FF1493 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+.slide-5 h2 {
+  font-size: 56px;
+  font-weight: 900;
+  margin-bottom: 40px;
+  color: white;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.model-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  text-align: center;
+}
+
+.model-item {
+  flex: 1;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+  padding: 24px;
+  border-radius: 12px;
+  border: 2px solid white;
+}
+
+.model-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #FFD700;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.model-value {
+  font-size: 36px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.model-desc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 500;
+}
+
+/* SLIDE 6: MARKET */
+.slide-6 {
+  background: linear-gradient(135deg, #00FF88 0%, #00D9FF 50%, #00FF88 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+  position: relative;
+}
+
+.slide-6 h2 {
+  font-size: 56px;
+  font-weight: 900;
+  margin-bottom: 40px;
+  color: white;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.market-stat {
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+  border: 2px solid white;
+  padding: 24px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.market-stat h3 {
+  font-size: 18px;
+  color: #FFD700;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.market-stat p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.95);
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* SLIDE 7: TEAM */
+.slide-7 {
+  background: linear-gradient(135deg, #FF1493 0%, #FF6B35 50%, #FFD700 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+.slide-7 h2 {
+  font-size: 56px;
+  font-weight: 900;
+  margin-bottom: 40px;
+  color: white;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.team-member {
+  text-align: center;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+  padding: 24px;
+  border-radius: 12px;
+  border: 2px solid white;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.team-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00D9FF, #00FF88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  margin: 0 auto 16px;
+  color: white;
+  font-weight: 900;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  border: 3px solid white;
+}
+
+.team-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.team-role {
+  font-size: 12px;
+  color: #FFD700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.team-bio {
+  font-size: 12px;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* SLIDE 8: ASK */
+.slide-8 {
+  background: linear-gradient(135deg, #3498DB 0%, #9B59B6 50%, #E74C3C 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+.slide-8 h2 {
+  font-size: 56px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  color: white;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.ask-amount {
+  font-size: 72px;
+  font-weight: 900;
+  color: #FFD700;
+  margin-bottom: 30px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.ask-use {
+  text-align: left;
+  display: inline-block;
+  margin-bottom: 30px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid white;
+}
+
+.ask-use h3 {
+  font-size: 14px;
+  font-weight: 800;
+  color: #FFD700;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.ask-use-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  font-size: 13px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 500;
+}
+
+.ask-use-item:last-child { border-bottom: none; }
+
+.ask-use-percent {
+  color: #FFD700;
+  font-weight: 800;
+  text-align: right;
+  min-width: 60px;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 16px 40px;
+  background: #FFD700;
+  color: #000;
+  font-weight: 800;
+  border-radius: 50px;
+  margin-top: 30px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+}
+
+.cta-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 32px rgba(255, 215, 0, 0.6);
+}
+
+/* CONTROLS */
+.deck-controls {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  z-index: 100;
+}
+
+.deck-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFD700, #FF6B35);
+  color: white;
+  border: 2px solid white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.deck-btn:hover {
+  transform: scale(1.2) rotate(5deg);
+  box-shadow: 0 8px 24px rgba(255,215,0,0.5);
+}
+
+.slide-counter {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  font-size: 14px;
+  color: #FFD700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 800;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  padding: 12px 20px;
+  border-radius: 50px;
+  border: 2px solid #FFD700;
+}
+
+@media (max-width: 1024px) {
+  .slide { padding: 40px 30px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .traction-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .hook-super { font-size: 48px; }
+}
+
+@media print {
+  .deck-controls, .slide-counter { display: none; }
+  .slide { page-break-after: always; }
+}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: HOOK 🎯 ULTRA CATCHY -->
+<div class="slide slide-1 active">
+  <div class="slide-number">01 / 08</div>
+  <div class="slide-content">
+    <div class="hook-emoji">✨</div>
+    <div class="hook-super">Stop Paying for Fashion<br>Disappointments</div>
+    <div class="hook-tagline">See It. Trust It. Wear It. Love It.</div>
+    <div class="hook-subtext">
+      Loran: AI-Powered Custom Fashion with Verified Designers<br>
+      Virtual Try-On • Perfect Fit • Zero Surprises
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: BURDEN -->
+<div class="slide slide-2">
+  <div class="slide-number">02 / 08</div>
+  <div class="slide-content">
+    <h2>The Problem</h2>
+    <div class="pain-box">
+      <p><span class="pain-emoji">😭</span> "She found a designer on Instagram. Sent ₦40,000. Perfect description. Waited 3 weeks. Got something completely different."</p>
+    </div>
+    <div class="pain-box">
+      <p><span class="pain-emoji">💔</span> "₦40,000 wasted. Confidence destroyed. Never ordered custom fashion again."</p>
+    </div>
+    <div class="pain-box">
+      <p><span class="pain-emoji">🤔</span> <strong>The Real Problem:</strong> 100% of custom fashion today is built on blind trust. Zero verification. Zero visibility. Zero accountability.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: SOLUTION -->
+<div class="slide slide-3">
+  <div class="slide-number">03 / 08</div>
+  <div class="slide-content">
+    <h2>Our Solution</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title">Verified Designers</div>
+        <div class="feature-desc">Background-checked, rated, accountable. No unknowns.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">AI Measurements</div>
+        <div class="feature-desc">Upload a photo. We extract perfect body dimensions in 3 seconds.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✨</div>
+        <div class="feature-title">Virtual Try-On</div>
+        <div class="feature-desc">See the outfit on YOUR body. Before you pay. Exactly as it will be.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">End-to-End Tracking</div>
+        <div class="feature-desc">Real-time updates. Design → Production → Shipped → Delivered.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: TRACTION -->
+<div class="slide slide-4">
+  <div class="slide-number">04 / 08</div>
+  <div class="slide-content">
+    <h2>Traction (7 Weeks In)</h2>
+    <div class="traction-grid">
+      <div class="traction-box">
+        <div class="traction-number">250+</div>
+        <div class="traction-label">Waitlist Signups</div>
+      </div>
+      <div class="traction-box">
+        <div class="traction-number">15</div>
+        <div class="traction-label">Verified Designers</div>
+      </div>
+      <div class="traction-box">
+        <div class="traction-number">25</div>
+        <div class="traction-label">Active Users</div>
+      </div>
+      <div class="traction-box">
+        <div class="traction-number">8</div>
+        <div class="traction-label">Paying Customers</div>
+      </div>
+      <div class="traction-box">
+        <div class="traction-number">₦80k</div>
+        <div class="traction-label">GMV (Week 1-7)</div>
+      </div>
+      <div class="traction-box">
+        <div class="traction-number">8.2</div>
+        <div class="traction-label">NPS Score</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: BUSINESS MODEL -->
+<div class="slide slide-5">
+  <div class="slide-number">05 / 08</div>
+  <div class="slide-content">
+    <h2>Revenue Model</h2>
+    <div class="model-container">
+      <div class="model-item">
+        <div class="model-label">Commission</div>
+        <div class="model-value">10%</div>
+        <div class="model-desc">Per order placed</div>
+      </div>
+      <div class="model-item">
+        <div class="model-label">Avg Order</div>
+        <div class="model-value">₦150k</div>
+        <div class="model-desc">Customer willingness to pay</div>
+      </div>
+      <div class="model-item">
+        <div class="model-label">Break-Even</div>
+        <div class="model-value">50/mo</div>
+        <div class="model-desc">Orders to profitability</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: MARKET -->
+<div class="slide slide-6">
+  <div class="slide-number">06 / 08</div>
+  <div class="slide-content">
+    <h2>Market Opportunity</h2>
+    <div class="market-stat">
+      <h3>TAM (Total Addressable Market)</h3>
+      <p>African fashion market: $100B+ annual. Custom segment: $5-8B</p>
+    </div>
+    <div class="market-stat">
+      <h3>SAM (Serviceable Addressable Market)</h3>
+      <p>Lagos + diaspora fashion consumers 18-45: 2M people. Willing to spend: 800k market</p>
+    </div>
+    <div class="market-stat">
+      <h3>SOM (Serviceable Obtainable Market)</h3>
+      <p>Year 1: 5,000 customers. Year 3: 50,000 customers. Path to $10M ARR</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: TEAM -->
+<div class="slide slide-7">
+  <div class="slide-number">07 / 08</div>
+  <div class="slide-content">
+    <h2>The Team</h2>
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="team-avatar">TO</div>
+        <div class="team-name">Tayo Oyebanji</div>
+        <div class="team-role">Founder & CEO</div>
+        <div class="team-bio">Fullstack engineer (React, Node.js, Three.js). Active tailor & fashion designer. Built entire platform solo. 6+ years sales experience.</div>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">AO</div>
+        <div class="team-name">Adetola Oyebanji</div>
+        <div class="team-role">Marketing & Operations Lead</div>
+        <div class="team-bio">250+ waitlist. Validated customer demand through discovery. Community building. Growth operations expert.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: ASK -->
+<div class="slide slide-8">
+  <div class="slide-number">08 / 08</div>
+  <div class="slide-content">
+    <h2>Our Ask</h2>
+    <div class="ask-amount">$50,000</div>
+    <div class="ask-use">
+      <h3>Use of Funds</h3>
+      <div class="ask-use-item">
+        <span>Product Development & Scaling</span>
+        <span class="ask-use-percent">40%</span>
+      </div>
+      <div class="ask-use-item">
+        <span>Marketing & Customer Acquisition</span>
+        <span class="ask-use-percent">35%</span>
+      </div>
+      <div class="ask-use-item">
+        <span>Designer Supply & Support</span>
+        <span class="ask-use-percent">15%</span>
+      </div>
+      <div class="ask-use-item">
+        <span>Operations (Legal, Salaries, Infrastructure)</span>
+        <span class="ask-use-percent">10%</span>
+      </div>
+    </div>
+    <p style="color: rgba(255,255,255,0.9); font-weight: 500; margin-bottom: 20px;">
+      Path to ₦5M monthly revenue by end of Year 1.<br>
+      Unit economics proven. 50% MoM growth. Profitable at scale.
+    </p>
+    <button class="cta-button">Join Us. Transform African Fashion.</button>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="deck-controls">
+  <button class="deck-btn" onclick="previousSlide()">←</button>
+  <button class="deck-btn" onclick="nextSlide()">→</button>
+</div>
+
+<div class="slide-counter">
+  <span id="current-slide">1</span> / 8
+</div>
+
+<script>
+let currentSlide = 1;
+const totalSlides = 8;
+
+function showSlide(n) {
+  const slides = document.querySelectorAll('.slide');
+  if (n > totalSlides) currentSlide = 1;
+  if (n < 1) currentSlide = totalSlides;
+  
+  slides.forEach(slide => slide.classList.remove('active'));
+  slides[currentSlide - 1].classList.add('active');
+  document.getElementById('current-slide').textContent = currentSlide;
+}
+
+function nextSlide() {
+  currentSlide++;
+  showSlide(currentSlide);
+}
+
+function previousSlide() {
+  currentSlide--;
+  showSlide(currentSlide);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') nextSlide();
+  if (e.key === 'ArrowLeft') previousSlide();
+  if (e.key === ' ') { e.preventDefault(); nextSlide(); }
+});
+
+showSlide(currentSlide);
+</script>
+
+</body>
+</html>
