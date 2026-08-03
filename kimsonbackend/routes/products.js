@@ -11,8 +11,8 @@ router.get('/:id', productController.getProduct);
 
 // Admin only routes
 router.get('/admin/all', protect, adminOnly, productController.getAllProducts);
-router.post('/', protect, adminOnly, productController.createProduct);
-router.put('/:id', protect, adminOnly, productController.updateProduct);
+router.post('/', protect, adminOnly, upload.single('image'), productController.createProduct);
+router.put('/:id', protect, adminOnly, upload.single('image'), productController.updateProduct);
 router.delete('/:id', protect, adminOnly, productController.deleteProduct);
 
 module.exports = router;

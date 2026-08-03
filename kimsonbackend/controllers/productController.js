@@ -80,8 +80,20 @@ exports.getProduct = async (req, res) => {
 // @access  Private/Admin
 exports.createProduct = async (req, res) => {
     try {
-        const product = await Product.create(req.body);
-        
+        const productData = { ...req.body };
+
+        // If a file was uploaded via multer, use its path as the image URL
+        if (req.file) {
+            productData.image = `/uploads/${req.file.filename}`;
+        }
+
+        // If no image URL or file yet, use a placeholder
+        if (!productData.image && !req.file) {
+            productData.image = 'https://via.placeholder.com/600x400?text=No+Image';
+        }
+
+        const product = await Product.create(productData);
+
         res.status(201).json({
             success: true,
             data: product
@@ -100,19 +112,24 @@ exports.createProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
     try {
         let product = await Product.findById(req.params.id);
-        
+
         if (!product) {
             return res.status(404).json({
                 success: false,
                 message: 'Product not found'
             });
         }
-        
+
+        // If a file was uploaded via multer, use its path as the image URL
+        if (req.file) {
+            req.body.image = `/uploads/${req.file.filename}`;
+        }
+
         product = await Product.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
         });
-        
+
         res.json({
             success: true,
             data: product

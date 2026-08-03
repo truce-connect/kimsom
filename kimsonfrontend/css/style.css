@@ -1701,6 +1701,12 @@ section {
     color: var(--primary);
 }
 
+.social-link.facebook:hover { background: #1877f2; }
+.social-link.twitter:hover { background: #1da1f2; }
+.social-link.instagram:hover { background: #e4405f; }
+.social-link.linkedin:hover { background: #0077b5; }
+.social-link.youtube:hover { background: #ff0000; }
+
 .footer-section h3 {
     color: var(--white);
     font-size: 18px;
@@ -1775,6 +1781,46 @@ section {
 .footer-bottom-links a:hover {
     color: var(--secondary);
 }
+
+/* Floating Social Sidebar */
+.social-sidebar {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px 10px 10px 0;
+    z-index: 999;
+    transition: transform 0.4s ease;
+}
+
+.social-sidebar-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.social-sidebar-link:hover {
+    transform: translateX(5px);
+    background: var(--secondary);
+    color: var(--primary);
+}
+
+.social-sidebar-link.facebook:hover { background: #1877f2; }
+.social-sidebar-link.twitter:hover { background: #1da1f2; }
+.social-sidebar-link.instagram:hover { background: #e4405f; }
+.social-sidebar-link.linkedin:hover { background: #0077b5; }
+.social-sidebar-link.youtube:hover { background: #ff0000; }
 
 /* Floating Buttons */
 .floating-buttons {
@@ -1971,6 +2017,10 @@ body.dark-mode .faq-question h3 {
     .hero-buttons {
         flex-direction: column;
         padding: 0 40px;
+    }
+    
+    .social-sidebar {
+        display: none;
     }
     
     .trust-grid {

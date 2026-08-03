@@ -210,61 +210,142 @@ function resetProductForm() {
     if (productForm) productForm.reset();
     const editId = document.getElementById('editProductId');
     if (editId) editId.value = '';
+    const fileInput = document.getElementById('productImageFile');
+    if (fileInput) fileInput.value = '';
+    const imageInput = document.getElementById('productImage');
+    if (imageInput) imageInput.value = '';
+    const imagePreview = document.getElementById('imagePreview');
+    if (imagePreview) imagePreview.style.display = 'none';
+    const uploadBtn = document.getElementById('uploadImageBtn');
+    if (uploadBtn) {
+        uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Image';
+        uploadBtn.style.display = 'block';
+    }
     const pageTitle = document.getElementById('pageTitle');
     if (pageTitle) pageTitle.textContent = 'Add Product';
     if (submitProductBtn) submitProductBtn.textContent = 'Add Product';
 }
 
+// Upload image button
+const uploadImageBtn = document.getElementById('uploadImageBtn');
+if (uploadImageBtn) {
+    uploadImageBtn.addEventListener('click', () => {
+        document.getElementById('productImageFile').click();
+    });
+}
+
+// File input change handler
+const productImageFile = document.getElementById('productImageFile');
+if (productImageFile) {
+    productImageFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById('imagePreview');
+                const previewImg = imagePreview.querySelector('img');
+                if (imagePreview && previewImg) {
+                    previewImg.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    uploadImageBtn.innerHTML = '<i class="fas fa-check"></i> Image Selected';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Clear image button
+const clearImageBtn = document.getElementById('clearImageBtn');
+if (clearImageBtn) {
+    clearImageBtn.addEventListener('click', () => {
+        document.getElementById('productImageFile').value = '';
+        document.getElementById('productImage').value = '';
+        document.getElementById('imagePreview').style.display = 'none';
+        uploadImageBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Image';
+    });
+}
+
 if (productForm) {
     productForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const editId = document.getElementById('editProductId').value;
         const isEdit = !!editId;
-        
+
         if (submitProductBtn) {
             submitProductBtn.textContent = isEdit ? 'Updating...' : 'Adding...';
             submitProductBtn.disabled = true;
         }
-        
-        const product = {
-            name: document.getElementById('productName').value,
-            category: document.getElementById('productCategory').value,
-            price: parseFloat(document.getElementById('productPrice').value),
-            oldPrice: document.getElementById('productOldPrice').value ? parseFloat(document.getElementById('productOldPrice').value) : null,
-            stock: parseInt(document.getElementById('productStock').value),
-            badge: document.getElementById('productBadge').value,
-            description: document.getElementById('productDescription').value,
-            image: document.getElementById('productImage').value || '',
-            rating: 5.0,
-            reviews: 0
-        };
-        
+
+        const fileInput = document.getElementById('productImageFile');
+        const file = fileInput ? fileInput.files[0] : null;
+
         try {
             const url = isEdit ? `${API_BASE}/products/${editId}` : `${API_BASE}/products`;
             const method = isEdit ? 'PUT' : 'POST';
-            
-            const res = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${authToken}`
-                },
-                body: JSON.stringify(product)
-            });
-            
+
+            let res;
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('name', document.getElementById('productName').value);
+                formData.append('category', document.getElementById('productCategory').value);
+                formData.append('price', parseFloat(document.getElementById('productPrice').value));
+                if (document.getElementById('productOldPrice').value) {
+                    formData.append('oldPrice', parseFloat(document.getElementById('productOldPrice').value));
+                }
+                formData.append('stock', parseInt(document.getElementById('productStock').value));
+                formData.append('badge', document.getElementById('productBadge').value);
+                formData.append('description', document.getElementById('productDescription').value);
+                if (document.getElementById('productImage').value) {
+                    formData.append('image', document.getElementById('productImage').value);
+                }
+                formData.append('rating', 5.0);
+                formData.append('reviews', 0);
+                formData.append('image', file);
+
+                res = await fetch(url, {
+                    method: method,
+                    headers: {
+                        Authorization: `Bearer ${authToken}`
+                    },
+                    body: formData
+                });
+            } else {
+                const product = {
+                    name: document.getElementById('productName').value,
+                    category: document.getElementById('productCategory').value,
+                    price: parseFloat(document.getElementById('productPrice').value),
+                    oldPrice: document.getElementById('productOldPrice').value ? parseFloat(document.getElementById('productOldPrice').value) : null,
+                    stock: parseInt(document.getElementById('productStock').value),
+                    badge: document.getElementById('productBadge').value,
+                    description: document.getElementById('productDescription').value,
+                    image: document.getElementById('productImage').value || '',
+                    rating: 5.0,
+                    reviews: 0
+                };
+
+                res = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(product)
+                });
+            }
+
             if (!res.ok) {
                 alert('Failed to save product. Please try again.');
                 return;
             }
-            
+
             const data = await res.json();
-            
+
             if (data.success) {
                 alert(isEdit ? 'Product updated successfully!' : 'Product added successfully!');
-                productForm.reset();
-                document.getElementById('editProductId').value = '';
-                if (submitProductBtn) submitProductBtn.textContent = 'Add Product';
+                resetProductForm();
                 loadDashboardData();
                 showSection('products');
             } else {
@@ -273,7 +354,10 @@ if (productForm) {
         } catch (err) {
             alert('Error saving product. Please try again.');
         } finally {
-            if (submitProductBtn) submitProductBtn.disabled = false;
+            if (submitProductBtn) {
+                submitProductBtn.disabled = false;
+                submitProductBtn.textContent = isEdit ? 'Update Product' : 'Add Product';
+            }
         }
     });
 }
@@ -393,6 +477,17 @@ async function editProduct(id) {
         document.getElementById('productBadge').value = product.badge || '';
         document.getElementById('productDescription').value = product.description || '';
         document.getElementById('productImage').value = product.image || '';
+
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = imagePreview.querySelector('img');
+        if (product.image) {
+            previewImg.src = product.image.startsWith('/uploads/') ? `${API_BASE.replace('/api', '')}${product.image}` : product.image;
+            imagePreview.style.display = 'block';
+            uploadImageBtn.innerHTML = '<i class="fas fa-check"></i> Image Set';
+        } else {
+            imagePreview.style.display = 'none';
+            uploadImageBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Image';
+        }
         
         document.getElementById('pageTitle').textContent = 'Edit Product';
         if (submitProductBtn) submitProductBtn.textContent = 'Update Product';
