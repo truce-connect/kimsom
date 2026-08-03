@@ -1955,7 +1955,8 @@ body.dark-mode .faq-question h3 {
         display: flex;
     }
     
-    .nav-actions .btn {
+    .nav-actions .call-btn,
+    .nav-actions .whatsapp-btn {
         display: none;
     }
     
