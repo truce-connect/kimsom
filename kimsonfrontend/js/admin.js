@@ -90,6 +90,133 @@ if (passwordToggle && passwordInput) {
     });
 }
 
+// Forgot Password Flow
+const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+const backToLoginLink = document.getElementById('backToLogin');
+let resetToken = null;
+
+if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginForm.style.display = 'none';
+        document.getElementById('forgotPasswordForm').style.display = 'block';
+    });
+}
+
+if (backToLoginLink) {
+    backToLoginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('forgotPasswordForm').style.display = 'none';
+        loginForm.style.display = 'block';
+        document.getElementById('resetEmail').value = '';
+        document.getElementById('resetToken').value = '';
+        document.getElementById('resetTokenGroup').style.display = 'none';
+        document.getElementById('resetPasswordGroup').style.display = 'none';
+        document.getElementById('resetPasswordGroup2').style.display = 'none';
+        document.getElementById('forgotSubmitBtn').textContent = 'Send Reset Link';
+    });
+}
+
+// Check URL params for reset token
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('token') && document.getElementById('forgotPasswordForm')) {
+    resetToken = urlParams.get('token');
+    loginForm.style.display = 'none';
+    document.getElementById('forgotPasswordForm').style.display = 'block';
+    document.getElementById('resetTokenGroup').style.display = 'block';
+    document.getElementById('resetToken').value = '';
+    document.getElementById('resetPasswordGroup').style.display = 'block';
+    document.getElementById('resetPasswordGroup2').style.display = 'block';
+    document.getElementById('forgotSubmitBtn').textContent = 'Reset Password';
+}
+
+// Forgot password form submission
+const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+if (forgotPasswordForm) {
+    forgotPasswordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById('forgotSubmitBtn');
+
+        if (resetToken) {
+            // Reset password
+            const password = document.getElementById('resetPassword').value;
+            const password2 = document.getElementById('resetPassword2').value;
+
+            if (!password || password !== password2) {
+                alert('Passwords do not match');
+                return;
+            }
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
+
+            btn.textContent = 'Resetting...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/resetpassword/${resetToken}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    alert('Password reset successfully! Please log in.');
+                    window.location.href = 'admin.html';
+                } else {
+                    alert(data.message || 'Reset failed');
+                }
+            } catch (err) {
+                alert('Error: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Reset Password';
+            }
+        } else {
+            // Request reset link
+            const email = document.getElementById('resetEmail').value;
+
+            if (!email) {
+                alert('Please enter your email');
+                return;
+            }
+
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/forgotpassword`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    // In development, show the reset link directly
+                    if (data.resetUrl) {
+                        alert('Password reset link:\n' + data.resetUrl);
+                    } else {
+                        alert('Password reset link sent to your email.');
+                    }
+                } else {
+                    alert(data.message || 'Failed to send reset link');
+                }
+            } catch (err) {
+                alert('Error: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Reset Link';
+            }
+        }
+    });
+}
+
 // Logout
 const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
@@ -298,9 +425,6 @@ if (productForm) {
                 formData.append('stock', parseInt(document.getElementById('productStock').value));
                 formData.append('badge', document.getElementById('productBadge').value);
                 formData.append('description', document.getElementById('productDescription').value);
-                if (document.getElementById('productImage').value) {
-                    formData.append('image', document.getElementById('productImage').value);
-                }
                 formData.append('rating', 5.0);
                 formData.append('reviews', 0);
                 formData.append('image', file);

@@ -14,14 +14,14 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true
     },
-    phone: {
-        type: String,
-        required: true
-    },
     password: {
         type: String,
         required: true,
-        minlength: 6
+        minlength: 6,
+        select: false
+    },
+    phone: {
+        type: String
     },
     address: {
         type: String,
@@ -30,7 +30,13 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ['user', 'admin'],
-        default: 'user'
+        default: 'admin'
+    },
+    passwordResetToken: {
+        type: String
+    },
+    passwordResetExpires: {
+        type: Date
     },
     isActive: {
         type: Boolean,
@@ -52,7 +58,8 @@ userSchema.pre('save', async function(next) {
 
 // Method to compare password
 userSchema.methods.comparePassword = async function(candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
+    const user = await this.constructor.findById(this._id).select('+password');
+    return await bcrypt.compare(candidatePassword, user.password);
 };
 
 module.exports = mongoose.model('User', userSchema);

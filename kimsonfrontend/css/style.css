@@ -183,14 +183,17 @@ button {
     width: 100%;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
     box-shadow: var(--shadow-sm);
     z-index: 1000;
-    transition: var(--transition);
+    transition: all 0.4s ease;
 }
 
 .navbar.scrolled {
     background: rgba(255, 255, 255, 0.98);
     box-shadow: var(--shadow-md);
+    border-bottom-color: rgba(226, 232, 240, 0.8);
 }
 
 .nav-content {
@@ -214,22 +217,24 @@ button {
     font-weight: 500;
     color: var(--text);
     position: relative;
+    padding: 8px 4px;
+    transition: all 0.3s ease;
 }
 
 .nav-link:hover,
 .nav-link.active {
-    color: var(--primary);
+    color: var(--accent);
 }
 
 .nav-link::after {
     content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: -6px;
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--secondary);
-    transition: var(--transition);
+    background: linear-gradient(90deg, var(--accent), var(--secondary));
+    transition: all 0.3s ease;
 }
 
 .nav-link:hover::after,
@@ -240,7 +245,7 @@ button {
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .nav-btn {
@@ -252,12 +257,36 @@ button {
     align-items: center;
     justify-content: center;
     color: var(--text);
-    transition: var(--transition);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
 }
 
 .nav-btn:hover {
     background: var(--primary);
     color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(11, 31, 58, 0.12);
+}
+
+.admin-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(11, 31, 58, 0.2);
 }
 
 .cart-btn {
@@ -1618,6 +1647,37 @@ section {
 .contact-details a {
     color: var(--accent);
 }
+
+.contact-social {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.social-link-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(11, 31, 58, 0.08);
+    color: var(--primary);
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-link-footer:hover {
+    transform: translateY(-2px);
+}
+
+.social-link-footer.facebook:hover { background: #1877f2; color: white; }
+.social-link-footer.twitter:hover { background: #1da1f2; color: white; }
+.social-link-footer.instagram:hover { background: #e4405f; color: white; }
+.social-link-footer.linkedin:hover { background: #0077b5; color: white; }
+.social-link-footer.youtube:hover { background: #ff0000; color: white; }
+.social-link-footer.whatsapp:hover { background: #25d366; color: white; }
 
 .contact-form-wrapper {
     background: var(--background);

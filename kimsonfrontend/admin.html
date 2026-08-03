@@ -34,10 +34,45 @@
                         </button>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                <div class="login-options">
+                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                    <a href="#" class="forgot-password" id="forgotPasswordLink">
+                        <i class="fas fa-key"></i> Forgot Password?
+                    </a>
+                </div>
                 <a href="index.html" class="back-link">
                     <i class="fas fa-arrow-left"></i> Back to Site
                 </a>
+            </form>
+
+            <!-- Forgot Password Form (hidden by default) -->
+            <form class="login-form" id="forgotPasswordForm" style="display: none;">
+                <div class="login-header">
+                    <h2>Reset Password</h2>
+                    <p>Enter your email to receive a reset link</p>
+                </div>
+                <div class="form-group">
+                    <label for="resetEmail">Email</label>
+                    <input type="email" id="resetEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group" id="resetTokenGroup" style="display: none;">
+                    <label for="resetToken">Reset Token</label>
+                    <input type="text" id="resetToken" placeholder="Enter token from email">
+                </div>
+                <div class="form-group" id="resetPasswordGroup" style="display: none;">
+                    <label for="resetPassword">New Password</label>
+                    <input type="password" id="resetPassword" placeholder="Enter new password">
+                </div>
+                <div class="form-group" id="resetPasswordGroup2" style="display: none;">
+                    <label for="resetPassword2">Confirm Password</label>
+                    <input type="password" id="resetPassword2" placeholder="Confirm new password">
+                </div>
+                <div class="login-options">
+                    <button type="submit" class="btn btn-primary btn-lg" id="forgotSubmitBtn">Send Reset Link</button>
+                    <a href="#" class="back-to-login" id="backToLogin">
+                        <i class="fas fa-arrow-left"></i> Back to Login
+                    </a>
+                </div>
             </form>
         </div>
     </div>
