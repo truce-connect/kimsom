@@ -7,7 +7,11 @@ window.addEventListener('load', () => {
     }, 1500);
 });
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = window.location.hostname === 'localhost' ||
+                 window.location.hostname === '127.0.0.1' ||
+                 window.location.hostname === '0.0.0.0'
+    ? 'http://localhost:5000/api'
+    : '/api';
 
 // Load products from backend
 async function loadProductsFromAPI() {

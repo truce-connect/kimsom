@@ -15,6 +15,9 @@ const paymentRoutes = require('./routes/payments');
 // Initialize app
 const app = express();
 
+// Trust proxy (required for Fly.io / reverse proxies)
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet());
 app.use(cors({
