@@ -3,6 +3,7 @@ services:
     name: kinsom-backend
     env: node
     plan: starter
+    rootDir: kimsonbackend
     buildCommand: npm install
     startCommand: npm start
     envVars:
