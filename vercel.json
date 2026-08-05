@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://kimsom.onrender.com/api/$1"
+      "destination": "https://kinmsombackend.bonto.run/api/$1"
     }
   ],
   "headers": [
