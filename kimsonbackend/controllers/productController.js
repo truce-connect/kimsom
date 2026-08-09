@@ -82,9 +82,11 @@ exports.createProduct = async (req, res) => {
     try {
         const productData = { ...req.body };
 
-        // If a file was uploaded via multer, use its path as the image URL
+        // If a file was uploaded via multer (memory storage), convert to base64 data URL
         if (req.file) {
-            productData.image = `/uploads/${req.file.filename}`;
+            const base64Image = req.file.buffer.toString('base64');
+            const mimeType = req.file.mimetype;
+            productData.image = `data:${mimeType};base64,${base64Image}`;
         }
 
         // If no image URL or file yet, use a placeholder
@@ -120,9 +122,11 @@ exports.updateProduct = async (req, res) => {
             });
         }
 
-        // If a file was uploaded via multer, use its path as the image URL
+        // If a file was uploaded via multer (memory storage), convert to base64 data URL
         if (req.file) {
-            req.body.image = `/uploads/${req.file.filename}`;
+            const base64Image = req.file.buffer.toString('base64');
+            const mimeType = req.file.mimetype;
+            req.body.image = `data:${mimeType};base64,${base64Image}`;
         }
 
         product = await Product.findByIdAndUpdate(req.params.id, req.body, {

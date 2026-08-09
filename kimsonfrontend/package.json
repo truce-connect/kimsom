@@ -1,0 +1,10 @@
+{
+  "name": "kimson-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Kinmson Int'l Success Venture",
+  "scripts": {
+    "dev": "npx serve . -p 3000",
+    "build": "echo 'No build needed - static files'",
+    "start": "npx serve . -p 3000"
+  }
+}

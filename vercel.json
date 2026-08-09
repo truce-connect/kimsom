@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://kim-256b4.containers.snapdeploy.app/api/$1"
+      "destination": "https://kimsonbackend.vercel.app/api/$1"
     }
   ],
   "headers": [
