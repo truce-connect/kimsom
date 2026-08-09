@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://kimsonbackend.vercel.app/api/$1"
+      "destination": "https://kimsonbackend-j2kc744nb-truces-projects.vercel.app/api/$1"
     }
   ],
   "headers": [
