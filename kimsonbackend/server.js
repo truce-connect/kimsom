@@ -20,17 +20,22 @@ app.set('trust proxy', 1);
 
 // Security middleware
 app.use(helmet());
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'http://localhost:3000',
+    'http://localhost:5500',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:5500'
+].filter(Boolean);
+
+if (process.env.NODE_ENV === 'production') {
+    const frontendUrl = process.env.FRONTEND_URL;
+    if (frontendUrl) allowedOrigins.push(frontendUrl);
+}
+
 app.use(cors({
     origin: function (origin, callback) {
-        const allowedOrigins = [
-            process.env.FRONTEND_URL,
-            'http://localhost:3000',
-            'http://localhost:5500',
-            'http://127.0.0.1:3000',
-            'http://127.0.0.1:5500'
-        ].filter(Boolean);
-
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
