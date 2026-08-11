@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://kimsonbackend-j2kc744nb-truces-projects.vercel.app/api/$1"
+      "destination": "https://node-express-app-03440dfc.containers.snapdeploy.app/api/$1"
     }
   ],
   "headers": [
