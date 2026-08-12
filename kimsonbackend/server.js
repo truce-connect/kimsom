@@ -31,6 +31,8 @@ const allowedOrigins = [
 if (process.env.NODE_ENV === 'production') {
     const frontendUrl = process.env.FRONTEND_URL;
     if (frontendUrl) allowedOrigins.push(frontendUrl);
+    allowedOrigins.push('https://kimsom.vercel.app');
+    allowedOrigins.push('https://kimsom-npva0wp03-truces-projects.vercel.app');
 }
 
 app.use(cors({
